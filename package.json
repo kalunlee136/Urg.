@@ -1,9 +1,20 @@
 {
-  "name": "socket-chat-example",
+  "name": "urg.",
   "version": "0.0.1",
-  "description": "my first socket.io app",
+  "description": "chat application for those stressful days",
+  "main":"index.js",
+  "repository": {
+  	"type":"git",
+  	"url": "https://github.com/kalunlee136/Urg..git"
+  },
   "dependencies": {
     "express": "^4.10.2",
     "socket.io": "^1.3.5"
+  },
+  "engines":{
+  	"node":"0.12.x"
+  },
+  "scripts":{
+  	"start":"node index.js"
   }
 }
