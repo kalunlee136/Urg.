@@ -3,8 +3,10 @@
 <html>
 	<head>
 		<title>Urg. Chat</title>
-		<style>
-	      * { margin: 0; padding: 0; box-sizing: border-box; }
+		<!-- using style this way b/c external stylesheet is not working 
+		and I don't feel like figuring that out at the moment-->
+		<style type="text/css">
+		 * { margin: 0; padding: 0; box-sizing: border-box; }
 	      body { font: 13px Helvetica, Arial; }
 	      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
 	      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
@@ -15,19 +17,23 @@
 	      #messages { list-style-type: none; margin: 0; padding: 0; }
 	      #messages li { padding: 5px 10px; }
 	      #messages li:nth-child(odd) { background: #eee; }
-
-	    </style>
+	      #speak{display:none;}
+		</style>	
 	</head>
 	<body>
-		<ul id="messages">
-		</ul>	
-			<form action="">
-				<input id="m" autocomplete="off" />
-					<button>Send</button>
-			</form>
+		<div id="container">
+			<p id="speak">Bot is typing...</p>
+			<ul id="messages">
+			</ul>	
+				<form action="">
+					<input id="m" autocomplete="off" />
+						<button>Send</button>
+				</form>
+		</div>
 	<script src="http://cdn.socket.io/socket.io-1.2.0.js"></script>
 	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 	<script>
+
 	  //retrieves messages submitted through the form, after presing send. 
 	  //returns false so the form doesnt close down.
 	  var socket = io();
@@ -36,11 +42,27 @@
 	    $('#m').val('');
 	    return false;
 	  });
+	  
 	  //retrieves messages, appends them to the <ul>
+	  //then adds a "user is typing" line
+	  //and runs the bot's response.
 	  socket.on('chat message', function(msg){
+	  	
 	    $('#messages').append($('<li>').text("User: "+ msg));
-	    $('#messages').append($('<li class="bot-messages">').text("Bot: aww.. that sucks..."));
+	    $('#speak').show();
+	    botResponse();
 	  });
+
+
+	  //waits 5 seconds then adds the bot's message and hides the "user is typing" line.
+	  var botResponse = function(){
+	  	  setTimeout(function(){
+		  	  $('#messages').append($('<li class="bot-messages">').text("Bot: aww.. that sucks..."));
+		  	  $('#speak').hide();
+		  	},5000);
+	  }
+
+
 	</script>
 	</body>
 

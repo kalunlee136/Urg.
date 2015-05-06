@@ -12,8 +12,18 @@ io.on('connection', function(socket){
   socket.on('chat message', function(msg){
     io.emit('chat message',msg);
   });
+
+  //socket.on('bot message', function(){
+  //  io.emit('bot message',"aww... that sucks..");
+  //});
+
+  //socket.on ('is typing', function(data){
+  //	io.emit('typing', {nickname: data});
+  //});
+
 });
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
+
