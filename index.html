@@ -39,7 +39,7 @@
 	  var socket = io();
 	  $('form').submit(function(){
 	    socket.emit('chat message', $('#m').val());
-	    socket.emit('bot message', $('#m').val());
+	    socket.emit('bot message',$('#m').val());
 	    $('#m').val('');
 	    return false;
 	  });
@@ -50,19 +50,18 @@
 	  socket.on('chat message', function(msg){
 	    $('#messages').append($('<li>').text("User: "+ msg));
 	    $('#speak').show();
-	    botResponse();
 	  });
 
-
 	  //waits 5 seconds then adds the bot's message and hides the "user is typing" line.
-	  var botResponse = function(){
-	  	  socket.on('bot message',function(msg){
-	  	  	setTimeout(function(){
-		  	  $('#messages').append($('<li class="bot-messages">').text(msg));
+	  socket.on('bot message',function(){
+	  	  	setTimeout(function(msg){
+		  	  $('#messages').append($('<li>'+'Bot: '+ 'aww that sucks'+ '</li>'));
 		  	  $('#speak').hide();
 		  	},2000);
-	  	  });
-	  }
+	  	 });
+
+	  	 
+	  
 
 
 	</script>
