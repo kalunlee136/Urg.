@@ -4,8 +4,6 @@ var io = require('socket.io')(http);
 var port = process.env.PORT || 3000; //Heroku uses different ports other than 3000.
                                      //This makes it flexible to any port used. 
 
-app.use("/styles", app.static(__dirname + '/style'));
-
 app.get('/', function(req, res){
   //IMPORTANT: ignore terminal's message telling you to use sendfile instead.
   //if you switch, it will crash the server. 	
