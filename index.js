@@ -1,3 +1,4 @@
+
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -10,6 +11,50 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 
 });
+
+//var usernames = {};
+
+// rooms which are currently available in chat
+var rooms = [];
+
+//Basically the main "class" of the socket. Everything in here is ran after the server is turned on.
+//What is actually happening: 
+//You create a web socket(io.on) and the socket parameter contains your object socket
+//you bind event handlers to it (they are the socket.on functions).
+
+
+io.on('connection', function(socket){
+  var name = ''
+  socket.on('adduser', function(username){
+      name = username;
+      // store the username in the socket session for this client
+      socket.username = username;
+      // store the room name in the socket session for this client
+      socket.room = username;
+      // add the client's username to the global list
+      //usernames[username] = username;
+      // send client to room 1
+      socket.join(username);
+    });
+   
+
+  //receives message from the user and displays it on the chat.
+  socket.on('chat message', function(msg){
+    socket.emit('chat message',msg);    
+  });
+
+  //picks a random message and sends it to the chat. 
+  socket.on('bot message',function(msg){
+    var i = getRandomInt(0,bot_response.length);
+    socket.emit('bot message',msg); 
+  });
+
+ 
+
+});
+
+
+
 
 //multiple responses the bot can use.
 var bot_response = ['I Care', 
@@ -27,59 +72,12 @@ var bot_response = ['I Care',
                     'I can’t really fully understand what you are feeling, but I can offer my compassion.'
                     ];
 
-var usernames = {};
-
-var rooms = ['room1','room2','room3']; 
-
-//Basically the main "class" of the socket. Everything in here is ran after the server is turned on.
-//What is actually happening: 
-//You create a web socket(io.on) and the socket parameter contains your object socket
-//you bind event handlers to it (they are the socket.on functions).
-
-io.on('connection', function(socket){
-
-  //receives message from the user and displays it on the chat.
-  socket.on('chat message', function(msg){
-    io.emit('chat message',msg);
-  });
-
-  //picks a random message and sends it to the chat. 
-  socket.on('bot message',function(msg){
-    var i = getRandomInt(0,bot_response.length);
-    io.emit('bot message',bot_response[i]);
-  });
-
-  //add user to his own room, similar to running a single chat client on its own thread.
-  //Used to create distinct chat instances instead of everyone sharing the same one. 
-  socket.on('adduser',function(username){
-    socket.username = username;
-    socket.room = username;
-    usernames[username] = username;
-    socket.join(username);
-    socket.emit('updatechat','SERVER',"You have connected to the room");
-    socket.broadcast.to(username).emit('updatechat','SERVER',username + 'has connected to this room');
-  });
-
-  //logic to run when the user disconnects from the chat. 
-  socket.on('disconnect',function(){
-    //remove the username from global usernames list
-    delete usernames[socket.username];
-    //update list of users in chat, client-side
-    io.emit('updateusers',usernames);
-    //echo globally that this client has left
-    socket.broadcast.emit('updatechat','SERVER',socket.username + 'has disconnected');
-    socket.leave(socket.room);
-  });
- 
-
-});
-
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-//runs as soon as the server is turned on
+
 http.listen(port, function(){
   console.log('listening on *:3000');
 });
