@@ -6,11 +6,16 @@ Use app.use for allowing access of external files.
 */
 
 
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000; //Heroku uses different ports other than 3000.
                                      //This makes it flexible to any port used. 
+
+//links to style path.
+//allows usage of external stylesheet, located at style/stylesheet.css
+app.use("/style",express.static(__dirname + "/style"));
 
 app.get('/', function(req, res){
   //IMPORTANT: ignore terminal's message telling you to use sendfile instead.
@@ -49,7 +54,7 @@ io.on('connection', function(socket){
   //picks a random message and sends it to the chat as a response. 
   socket.on('bot message',function(msg){
     var i = getRandomInt(0,bot_response.length);
-    socket.emit('bot message',bot_response[i]; 
+    socket.emit('bot message',bot_response[i]); 
   });
 
  
