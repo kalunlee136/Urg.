@@ -1,3 +1,10 @@
+/* Important things to know about socket.io/express/node.js
+
+Use socket.emit for sending client-only messages 
+Use app.use for allowing access of external files. 
+  Then continue with the normal procedure to insert those files.
+*/
+
 
 var app = require('express')();
 var http = require('http').Server(app);
@@ -7,12 +14,10 @@ var port = process.env.PORT || 3000; //Heroku uses different ports other than 30
 
 app.get('/', function(req, res){
   //IMPORTANT: ignore terminal's message telling you to use sendfile instead.
-  //if you switch, it will crash the server. 	
+  //if you switch, it will nor work. 	
   res.sendFile(__dirname + '/index.html');
 
 });
-
-//var usernames = {};
 
 // rooms which are currently available in chat
 var rooms = [];
@@ -24,15 +29,13 @@ var rooms = [];
 
 
 io.on('connection', function(socket){
-  var name = ''
+
   socket.on('adduser', function(username){
       name = username;
       // store the username in the socket session for this client
       socket.username = username;
       // store the room name in the socket session for this client
       socket.room = username;
-      // add the client's username to the global list
-      //usernames[username] = username;
       // send client to room 1
       socket.join(username);
     });
@@ -43,10 +46,10 @@ io.on('connection', function(socket){
     socket.emit('chat message',msg);    
   });
 
-  //picks a random message and sends it to the chat. 
+  //picks a random message and sends it to the chat as a response. 
   socket.on('bot message',function(msg){
     var i = getRandomInt(0,bot_response.length);
-    socket.emit('bot message',msg); 
+    socket.emit('bot message',bot_response[i]; 
   });
 
  
