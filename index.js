@@ -4,12 +4,30 @@ var io = require('socket.io')(http);
 var port = process.env.PORT || 3000; //Heroku uses different ports other than 3000.
                                      //This makes it flexible to any port used. 
 
+app.use("/styles", app.static(__dirname + '/style'));
 
 app.get('/', function(req, res){
   //IMPORTANT: ignore terminal's message telling you to use sendfile instead.
   //if you switch, it will crash the server. 	
-  res.sendFile(__dirname + '/index.html'); 
+  res.sendFile(__dirname + '/index.html');
+
 });
+
+//multiple responses the bot can use.
+var bot_response = ['I Care', 
+                    'You’re not alone in this',
+                    'I’m not going to leave/abandon you',
+                    'Do you want a hug?',
+                    'I love you (if you mean it).',
+                    'It will pass, we can ride it out together.',
+                    'When all this is over, I’ll still be here (if you mean it) and so will you.',
+                    'May the strength of the past reflect in your future.',
+                    ' "God does not play dice with the universe.” – A. Einstein',
+                    '“A miracle is simply a do-it-yourself project.” – S. Leek',
+                    'I understand your pain and I empathize',
+                    'I’m sorry you’re in so much pain. I am not going to leave you. I am going to take care of myself so you don’t need to worry that your pain might hurt me.',
+                    'I can’t really fully understand what you are feeling, but I can offer my compassion.'
+                    ];
 
 var usernames = {};
 
@@ -27,9 +45,10 @@ io.on('connection', function(socket){
     io.emit('chat message',msg);
   });
 
-  //pulls message from cleverbot and displays it on the chat. 
+  //picks a random message and sends it to the chat. 
   socket.on('bot message',function(msg){
-    io.emit('bot message',"aww that sucks");
+    var i = getRandomInt(0,bot_response.length);
+    io.emit('bot message',bot_response[i]);
   });
 
   //add user to his own room, similar to running a single chat client on its own thread.
@@ -56,6 +75,11 @@ io.on('connection', function(socket){
  
 
 });
+
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 //runs as soon as the server is turned on
 http.listen(port, function(){
