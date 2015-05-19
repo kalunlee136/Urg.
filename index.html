@@ -6,9 +6,14 @@
 		<!-- using style this way b/c external stylesheet is not working 
 		and I don't feel like figuring that out at the moment-->
 		
-  		<link rel="stylesheet" type="text/css" href="style/style.css">
+  	<link rel="stylesheet"  href="style/style.css">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	</head>
 	<body>
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
 	<!-- html displayed in front page-->
 		<div id="container">
 			<ul id="messages">
@@ -16,18 +21,43 @@
 		</div>
 		<p id="speak">Bot is typing...</p>	
 		<form>
-			<input id="m" autocomplete="off" name="userinput" type="text" size="10"/>
-				<button>Send</button>
+			<textarea class="form-control" id="m" autocomplete="off" rows="4" cols="50" >
+			</textarea>
+			<button>Send</button>
+			<a href="#" id="innerSticker">Stickers</a>
 		</form>
 
+		<div id="stickerWithImages" style="display:none">
+			<div class="row" style="width:230px">
+				<img class="sticker"src="../stickers/itsok.jpg" alt="itsok.jpg" style="width:50px;height:50px">
+				 <img  class="sticker" src="../stickers/hehe.jpg" alt="hehe.jpg" style="width:50px;height:50px">
+				 <img  class="sticker" src="../stickers/thumbsup.jpg" alt="thumbsup.jpg" style="width:50px;height:50px">
+				 <img  class="sticker" src="../stickers/ducklove.jpg" alt="ducklove.jpg" style="width:50px;height:50px">
+				 <img  class="sticker" src="../stickers/loveshirt.jpg" alt="loveshirt.jpg" style="width:50px;height:50px">
+				 <img  class="sticker" src="../stickers/itsok.jpg" alt="itsok.jpg" style="width:50px;height:50px">
+			</div>
+		</div>
 	<!-- html displayed in front page-->
-	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+	
+	
 	<script>
-		
 	  //retrieves messages submitted through the form, after presing send. 
 	  //returns false so the form doesnt close down.
 	  //does not send messages if user input is empty/none.
+	  $(function () {
+		  $('[data-toggle="popover"]').popover();
+
+		  $("#innerSticker").popover({
+		  	html: true,
+		  	content: function(){
+		  		$('p').click(function(){
+				  	alert(1);
+				  });
+		  		return $('#stickerWithImages').html();
+		  	}
+		  });
+		});
+
 
 	  var socket = io();
 
@@ -36,11 +66,11 @@
 		socket.emit('adduser', prompt("What's your name?"));
 	  });
 
-	  $('form').submit(function(){
+	  $('button').click(function(){
 	  	if($('#m').val() != ''){
-		    socket.emit('chat message', $('#m').val());
+		    socket.emit('chat message',$('#m').val());
 		    socket.emit('bot message',$('#m').val());
-		    $('#m').val('');
+		    $('textarea').val('');
 		}
 	    return false;
 	  });
@@ -49,17 +79,22 @@
 	  //then adds a "user is typing" line
 	  //and runs the bot's response.
 	  socket.on('chat message', function(msg){
-	    $('#messages').append($('<li>').text("You: "+ msg));
+        $('#messages').append($('<li>'+ 'You: '+ msg + '</li>'));
 	    $('#speak').show();
 	  });
 
 	  //waits 5 seconds then adds the bot's message and hides the "user is typing" line.
 	  socket.on('bot message',function(m){
 	  	  	setTimeout(function(){
-		  	  $('#messages').append($('<li>'+'Billy Bot: '+ m + '</li>'));
+		  	  $('#messages').append($('<li>'+'Barbara Bot: '+ m + '</li>'));
 		  	  $('#speak').hide();
 		  	},2000);
 	  	 });	
+
+	  $(document).on("click", ".sticker", function() {
+		  $('textarea').val(this.alt);
+	  });
+
 
 
 	</script>
