@@ -1,6 +1,7 @@
 <!doctype html>
 
 <html>
+	
 	<head>
 		<title>Urg. Chat</title>
 		<!-- using style this way b/c external stylesheet is not working 
@@ -10,11 +11,31 @@
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	</head>
 	<body>
+	<script>
+		function start() {
+			document.getElementById("landing").style.display = "none";
+			document.getElementById("chat").style.display = "initial";
+		}
+	</script>
 	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 	<!-- html displayed in front page-->
+	<div class='page' id='landing'>
+		<div id='title'>
+			<h1 class='header'>ugh.</h1>
+		</div>
+		<div id='content'>
+			<div id='cta' class='button' onclick="start()">vent</div>
+		</div>
+	</div>
+	<div class="page" id="chat">
+		<div id="mini_title">
+			<h1 class="mini_header">ugh.</h1>
+		</div>
+		<div id="chatbox">
+
 		<div id="container">
 			<ul id="messages">
 			</ul>
@@ -37,6 +58,11 @@
 				 <img  class="sticker" src="../stickers/itsok.jpg" alt="itsok.jpg" style="width:50px;height:50px">
 			</div>
 		</div>
+		</div>
+		<div class="button" id="end">
+			i'm done
+		</div>
+	</div>
 	<!-- html displayed in front page-->
 	
 	
@@ -63,7 +89,7 @@
 
 	  socket.on('connect', function(){
 		// call the server-side function 'adduser' and send one parameter (value of prompt)
-		socket.emit('adduser', prompt("What's your name?"));
+		socket.emit('adduser', 'user');
 	  });
 
 	  $('button').click(function(){
