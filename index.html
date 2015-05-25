@@ -6,17 +6,11 @@
 		<title>Urg. Chat</title>
 		<!-- using style this way b/c external stylesheet is not working 
 		and I don't feel like figuring that out at the moment-->
-		
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   	<link rel="stylesheet"  href="style/style.css">
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 	</head>
 	<body>
-	<script>
-		function start() {
-			document.getElementById("landing").style.display = "none";
-			document.getElementById("chat").style.display = "initial";
-		}
-	</script>
 	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -31,88 +25,148 @@
 		</div>
 	</div>
 	<div class="page" id="chat">
-		<div id="mini_title">
-			<h1 class="mini_header">ugh.</h1>
-		</div>
-		<div id="chatbox">
+		<div class="container">
+			<div id="mini_title">
+				<h1 class="mini_header">ugh.</h1>
+			</div>
+			<div id="chatbox">
 
-		<div id="container">
-			<ul id="messages">
-			</ul>
-		</div>
-		<p id="speak">Bot is typing...</p>	
-		<form>
-			<textarea class="form-control" id="m" autocomplete="off" rows="4" cols="50" >
-			</textarea>
-			<button>Send</button>
-			<a href="#" id="innerSticker">Stickers</a>
-		</form>
+				<div id="container">
+					<ul id="messages">
+					</ul>
+				</div>
+				<br/><br/>
+				<div>
+					<p id="speak">Bot is typing...</p>	
+				</div>
 
-		<div id="stickerWithImages" style="display:none">
-			<div class="row" style="width:230px">
-				<img class="sticker"src="../stickers/itsok.jpg" alt="itsok.jpg" style="width:50px;height:50px">
-				 <img  class="sticker" src="../stickers/hehe.jpg" alt="hehe.jpg" style="width:50px;height:50px">
-				 <img  class="sticker" src="../stickers/thumbsup.jpg" alt="thumbsup.jpg" style="width:50px;height:50px">
-				 <img  class="sticker" src="../stickers/ducklove.jpg" alt="ducklove.jpg" style="width:50px;height:50px">
-				 <img  class="sticker" src="../stickers/loveshirt.jpg" alt="loveshirt.jpg" style="width:50px;height:50px">
-				 <img  class="sticker" src="../stickers/itsok.jpg" alt="itsok.jpg" style="width:50px;height:50px">
+				<form>
+					<textarea class="form-control" id="m" autocomplete="off" rows="4" cols="50" >
+					</textarea>
+					<button id="send">Send</button>
+					<a href="#" id="innerSticker">(*´・ｖ・)</a>
+				</form>
+
+				<div id="stickerWithImages" style="display:none">
+					<div class="row" style="width:230px">
+						<img class="sticker"src="../stickers/itsok.jpg" alt="itsok.jpg" style="width:50px;height:50px">
+						 <img  class="sticker" src="../stickers/hehe.jpg" alt="hehe.jpg" style="width:50px;height:50px">
+						 <img  class="sticker" src="../stickers/thumbsup.jpg" alt="thumbsup.jpg" style="width:50px;height:50px">
+						 <img  class="sticker" src="../stickers/ducklove.jpg" alt="ducklove.jpg" style="width:50px;height:50px">
+						 <img  class="sticker" src="../stickers/loveshirt.jpg" alt="loveshirt.jpg" style="width:50px;height:50px">
+						 <img  class="sticker" src="../stickers/itsok.jpg" alt="itsok.jpg" style="width:50px;height:50px">
+					</div>
+				</div>
 			</div>
 		</div>
+		
+		<div class="row">
+		<!-- 'End' button-->
+			<div class="button" data-toggle="modal" data-target="#myModal" id="end">
+			  I'm done
+			</div>
+
+			<!-- Modal for 'End button-->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel">Ughhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</h4>
+			      </div>
+			      <div class="modal-body">
+			        <p>If you'd like a transcript of the conversation for your own records, please enter your email address and click "Send".</p>
+
+			        <p>Otherwise feel free to close this window. This conversation will not be saved anywhere.</p>
+
+			        <p>Thanks for using ugh. !</p>
+
+			        <form style="background:white;">
+			          <div class="form-group">
+			            <label for="recipient-name" class="control-label">Email:</label>
+			            <input type="text" class="form-control" id="recipient-name">
+			          </div>
+			          <button type="button" class="btn btn-primary">Send</button>
+			        </form>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+
+
+			<!-- About us button-->
+			<div class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-sm" style="float:right;">About Us</div>
+
+			<!--modal for the about us button-->
+			<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+			  <div class="modal-dialog modal-sm">
+			    <div class="modal-content" style="padding: 5%;">
+			    	<h1 style="text-align:center;">ugh.</h1>
+			     	<p>Online diaries with a twist! Complain all</p>
+			        <p>day to FriendBot, who will provide </p>
+			        <p>the desired amount of sympathy or other</p>
+			        <p>response.</p>
+			        <br>
+			    	<p>Simply chat for as long as you like with</p>
+			    	<p>FriendBot, and press "End" to finish</p>
+			    	<p>your session. From there, you can enter</p>
+			    	<p>your email address and have the conversation transcript </p>
+			    	<p>mailed to you, OR simply end the conversation</p>
+			    	<p>and all of this will be deleted forever.</p>
+			    </div>
+			    <div class="modal-footer">
+		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		    	</div>
+		      </div>
+			  </div>
+			</div>
+
 		</div>
-		<div class="button" id="end">
-			i'm done
-		</div>
+
 	</div>
+	
+
+
 	<!-- html displayed in front page-->
 	
 	
 	<script>
-	  //retrieves messages submitted through the form, after presing send. 
-	  //returns false so the form doesnt close down.
-	  //does not send messages if user input is empty/none.
-	  $(function () {
-		  $('[data-toggle="popover"]').popover();
 
-		  $("#innerSticker").popover({
-		  	html: true,
-		  	content: function(){
-		  		$('p').click(function(){
-				  	alert(1);
-				  });
-		  		return $('#stickerWithImages').html();
-		  	}
-		  });
-		});
-
-
-	  var socket = io();
-
-	  socket.on('connect', function(){
-		// call the server-side function 'adduser' and send one parameter (value of prompt)
-		socket.emit('adduser', 'user');
-	  });
-
-	  $('button').click(function(){
-	  	if($('#m').val() != ''){
+	$('button#send').click(function(){
+	  	if($('textarea').val() != ''){
 		    socket.emit('chat message',$('#m').val());
 		    socket.emit('bot message',$('#m').val());
 		    $('textarea').val('');
 		}
 	    return false;
 	  });
+
+	  //retrieves messages submitted through the form, after presing send. 
+	  //returns false so the form doesnt close down.
+	  //does not send messages if user input is empty/none.
+	 
+	  var socket = io();
+
+	  socket.on('connect', function(){
+		// call the server-side function 'adduser' and send one parameter (value of prompt)
+		socket.emit('adduser', 'user');
+	  });
 	  
 	  //retrieves messages, appends them to the <ul>
 	  //then adds a "user is typing" line
 	  //and runs the bot's response.
 	  socket.on('chat message', function(msg){
-        $('#messages').append($('<li>'+ 'You: '+ msg + '</li>'));
+        $('#messages').prepend($('<li>'+'<div class="talk-bubble tri-right left-top" style="float:left;"><div class="talktext"><p>'+ msg +'</p></div> </li>'));
 	    $('#speak').show();
 	  });
 
 	  //waits 5 seconds then adds the bot's message and hides the "user is typing" line.
 	  socket.on('bot message',function(m){
 	  	  	setTimeout(function(){
-		  	  $('#messages').append($('<li>'+'Barbara Bot: '+ m + '</li>'));
+		  	  $('#messages').prepend($('<li>'+'<div class="talk-bubble tri-right right-top" style="float:right;"><div class="talktext"><p>'+ m +'</p></div> </li>'));
 		  	  $('#speak').hide();
 		  	},2000);
 	  	 });	
@@ -121,7 +175,36 @@
 		  $('textarea').val(this.alt);
 	  });
 
+	  //transfer from landing page to the chat
+	  function start() {
+		document.getElementById("landing").style.display = "none";
+		document.getElementById("chat").style.display = "initial";
+	  }
 
+	  //pops up the sticker field
+	 $(function () {
+	  $('[data-toggle="popover"]').popover();
+
+	  $("#innerSticker").popover({
+	  	html: true,
+	  	content: function(){
+	  		$('p').click(function(){
+			  	alert(1);
+			  });
+	  		return $('#stickerWithImages').html();
+	  	}
+	   });
+	 });
+
+	 //When enter key pressed, clicks the send button to send a message 
+	 $('.form-control').keypress(function(e){
+	 	var key = e.which;
+	 	if(key==13) // this is the enter key code
+	 	{
+	 		$('button#send').click();
+	 		return false;
+	 	}
+	 });
 
 	</script>
 	</body>
