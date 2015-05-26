@@ -32,21 +32,18 @@
 			<div id="chatbox">
 
 				<div id="container">
+					<p id="speak">Bot is typing...</p>	
 					<ul id="messages">
+						<li><div class="talk-bubble tri-right right-top" style="float:right;"><div class="talktext"><p>UghBot: Hello there! How are you today? Feel free to share it with me!</p></div></li>
 					</ul>
 				</div>
-				<br/><br/>
-				<div>
-					<p id="speak">Bot is typing...</p>	
-				</div>
-
+				
 				<form>
-					<textarea class="form-control" id="m" autocomplete="off" rows="4" cols="50" >
-					</textarea>
+					<textarea class="form-control" id="m" autocomplete="off" rows="4" cols="50" ></textarea>
 					<button id="send">Send</button>
-					<a href="#" id="innerSticker">(*´・ｖ・)</a>
+					<!--<a href="#" id="innerSticker">(*´・ｖ・)</a>-->
 				</form>
-
+				<!--
 				<div id="stickerWithImages" style="display:none">
 					<div class="row" style="width:230px">
 						<img class="sticker"src="../stickers/itsok.jpg" alt="itsok.jpg" style="width:50px;height:50px">
@@ -57,13 +54,14 @@
 						 <img  class="sticker" src="../stickers/itsok.jpg" alt="itsok.jpg" style="width:50px;height:50px">
 					</div>
 				</div>
+				-->
 			</div>
 		</div>
 		
 		<div class="row">
 		<!-- 'End' button-->
 			<div class="button" data-toggle="modal" data-target="#myModal" id="end">
-			  I'm done
+			  <p>End</p>
 			</div>
 
 			<!-- Modal for 'End button-->
@@ -140,6 +138,8 @@
 		    socket.emit('chat message',$('#m').val());
 		    socket.emit('bot message',$('#m').val());
 		    $('textarea').val('');
+		    $("#container").animate({ scrollTop: $(document).height() }, "fast");
+
 		}
 	    return false;
 	  });
@@ -159,20 +159,23 @@
 	  //then adds a "user is typing" line
 	  //and runs the bot's response.
 	  socket.on('chat message', function(msg){
-        $('#messages').prepend($('<li>'+'<div class="talk-bubble tri-right left-top" style="float:left;"><div class="talktext"><p>'+ msg +'</p></div> </li>'));
+        $('#messages').append($('<li>'+'<div class="talk-bubble tri-right left-top" style="float:left;"> <div class="talktext"><p>'+ 'You: ' +msg +'</p></div> </li>'));
 	    $('#speak').show();
+	    $("#container").animate({ scrollTop: $(document).height() }, "fast");
 	  });
 
 	  //waits 5 seconds then adds the bot's message and hides the "user is typing" line.
 	  socket.on('bot message',function(m){
 	  	  	setTimeout(function(){
-		  	  $('#messages').prepend($('<li>'+'<div class="talk-bubble tri-right right-top" style="float:right;"><div class="talktext"><p>'+ m +'</p></div> </li>'));
+		  	  $('#messages').append($('<li>'+'<div class="talk-bubble tri-right right-top" style="float:right;"><div class="talktext"><p>'+'UghBot: '+ m +'</p></div> </li>'));
 		  	  $('#speak').hide();
+		  	  $("#container").animate({ scrollTop: $(document).height() }, "fast");
 		  	},2000);
 	  	 });	
 
 	  $(document).on("click", ".sticker", function() {
 		  $('textarea').val(this.alt);
+		  $('[data-toggle="popover"]').popover();
 	  });
 
 	  //transfer from landing page to the chat
@@ -189,7 +192,7 @@
 	  	html: true,
 	  	content: function(){
 	  		$('p').click(function(){
-			  	alert(1);
+			  	console.log(1);
 			  });
 	  		return $('#stickerWithImages').html();
 	  	}
